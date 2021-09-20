@@ -2583,6 +2583,7 @@ bool Tracking::TrackReferenceKeyFrame()
     vector<MapPoint*> vpMapPointMatches;
 
     int nmatches = matcher.SearchByBoW(mpReferenceKF,mCurrentFrame,vpMapPointMatches);
+    cout << "nmatches to reference frame " << nmatches << endl;
 
     if(nmatches<15)
     {

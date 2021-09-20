@@ -23,6 +23,7 @@
 #include<chrono>
 
 #include<ros/ros.h>
+#include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
@@ -106,6 +107,7 @@ int main(int argc, char **argv)
     }
 
     ros::NodeHandle nh;
+    image_transport::ImageTransport it(nh);
 
     message_filters::Subscriber<sensor_msgs::Image> left_sub(nh, "/camera/left/image_raw", 1);
     message_filters::Subscriber<sensor_msgs::Image> right_sub(nh, "/camera/right/image_raw", 1);

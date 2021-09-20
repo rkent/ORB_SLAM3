@@ -26,6 +26,7 @@
 #include<mutex>
 
 #include<ros/ros.h>
+#include <image_transport/image_transport.h>
 #include<cv_bridge/cv_bridge.h>
 #include<sensor_msgs/Imu.h>
 
@@ -75,6 +76,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "Stereo_Inertial");
   ros::NodeHandle n("~");
+  image_transport::ImageTransport it(n);
   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
   bool bEqual = false;
   if(argc < 4 || argc > 5)
@@ -139,8 +141,8 @@ int main(int argc, char **argv)
 
   // Maximum delay, 5 seconds
   ros::Subscriber sub_imu = n.subscribe("/imu", 1000, &ImuGrabber::GrabImu, &imugb); 
-  ros::Subscriber sub_img_left = n.subscribe("/camera/left/image_raw", 100, &ImageGrabber::GrabImageLeft,&igb);
-  ros::Subscriber sub_img_right = n.subscribe("/camera/right/image_raw", 100, &ImageGrabber::GrabImageRight,&igb);
+  image_transport::Subscriber sub_img_left = it.subscribe("/camera/left/image_raw", 100, &ImageGrabber::GrabImageLeft,&igb);
+  image_transport::Subscriber sub_img_right = it.subscribe("/camera/right/image_raw", 100, &ImageGrabber::GrabImageRight,&igb);
 
   std::thread sync_thread(&ImageGrabber::SyncWithImu,&igb);
 

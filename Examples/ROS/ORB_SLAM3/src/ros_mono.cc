@@ -23,6 +23,7 @@
 #include<chrono>
 
 #include<ros/ros.h>
+#include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 
 #include<opencv2/core/core.hpp>
@@ -59,7 +60,8 @@ int main(int argc, char **argv)
     ImageGrabber igb(&SLAM);
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
+    image_transport::ImageTransport it(nodeHandler);
+    image_transport::Subscriber sub = it.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
 
     ros::spin();
 
